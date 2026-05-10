@@ -166,9 +166,16 @@ export default function Home() {
       {/* ===== LEFT PANEL ===== */}
       <aside className={`panel left ${collectionId ? "compact" : ""}`}>
         <div className="brand">
-          <div className="brand-mark">📓</div>
+          <div className="brand-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 4.5A2.5 2.5 0 016.5 2H20v18H6.5A2.5 2.5 0 014 17.5v-13z" />
+              <path d="M4 17.5A2.5 2.5 0 016.5 15H20" />
+              <path d="M9 7h7" />
+              <path d="M9 11h5" />
+            </svg>
+          </div>
           <div className="brand-text">
-            <div className="brand-name">NotebookLM Clone</div>
+            <div className="brand-name">NotebookLM</div>
             <div className="brand-sub">Gemini · Qdrant · RAG</div>
           </div>
         </div>
@@ -304,7 +311,14 @@ export default function Home() {
         <div className="chat-log">
           {messages.length === 0 && (
             <div className="empty">
-              <div className="empty-art">💬</div>
+              <div className="empty-art">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                  <circle cx="9" cy="10" r="0.6" fill="currentColor" />
+                  <circle cx="12" cy="10" r="0.6" fill="currentColor" />
+                  <circle cx="15" cy="10" r="0.6" fill="currentColor" />
+                </svg>
+              </div>
               <div className="empty-title">
                 {collectionId ? "Ask anything about your document" : "Upload a document to start chatting"}
               </div>
