@@ -1,0 +1,63 @@
+Large Language Models (LLMs): A Comprehensive Overview
+
+1. Introduction
+A Large Language Model, or LLM, is a type of artificial intelligence system trained on vast amounts of text data to understand and generate human-like language. LLMs are built on a neural network architecture called the Transformer, which was introduced by Vaswani et al. in 2017 in the paper "Attention Is All You Need." The defining feature of an LLM is scale — both in the number of parameters (often in the billions or trillions) and in the size of the training corpus (often hundreds of billions to trillions of tokens scraped from the public web, books, and code repositories).
+
+2. How LLMs Work
+At their core, LLMs are next-token predictors. Given a sequence of input tokens, the model produces a probability distribution over the next possible token in its vocabulary. Generation is performed by repeatedly sampling or greedily selecting the next token and appending it to the input. This simple objective, when scaled to billions of parameters and trillions of tokens, produces emergent behaviors such as in-context learning, reasoning, code generation, and translation — none of which were explicitly programmed.
+
+The Transformer architecture relies on a mechanism called self-attention, which allows every token in a sequence to attend to every other token. This is what gives LLMs their ability to handle long-range dependencies in text, such as resolving a pronoun to a noun mentioned several paragraphs earlier.
+
+3. Training Stages
+Modern LLMs typically undergo three training stages:
+
+a) Pretraining: The model is trained on a massive corpus of text using the next-token-prediction objective. This stage is the most computationally expensive — frontier models can cost tens of millions of dollars in compute.
+
+b) Supervised Fine-Tuning (SFT): The model is fine-tuned on a smaller, curated dataset of high-quality instruction-response pairs. This teaches the model to follow instructions rather than just continuing arbitrary text.
+
+c) Reinforcement Learning from Human Feedback (RLHF): Human annotators rank multiple model responses, and the model is trained to prefer the higher-ranked outputs. This stage aligns the model with human preferences for helpfulness, honesty, and harmlessness. A newer variant called DPO (Direct Preference Optimization) achieves similar results with simpler math.
+
+4. Notable Model Families
+- GPT (OpenAI): GPT-3, GPT-4, and GPT-4o are closed-source models accessible only through OpenAI's API.
+- Claude (Anthropic): Claude 3 Opus, Sonnet, and Haiku, followed by Claude 3.5 and Claude 4 families. Anthropic emphasizes safety research and Constitutional AI training methods.
+- Gemini (Google DeepMind): Gemini 1.5 Pro and Gemini 2.0 Flash are multimodal models with context windows up to 2 million tokens.
+- Llama (Meta): Llama 2, Llama 3, and Llama 3.1 are open-weight models that can be downloaded and run locally, enabling self-hosted deployments.
+- Mistral (Mistral AI): A family of efficient open-weight models from a French startup, including Mistral 7B and Mixtral 8x7B (a Mixture-of-Experts model).
+
+5. Capabilities
+LLMs are capable of an unusually wide range of language tasks: summarization, translation between dozens of languages, code generation in most popular programming languages, mathematical reasoning, document question-answering, creative writing, and structured data extraction. State-of-the-art models can also process images, audio, and video in addition to text — these are referred to as multimodal models.
+
+6. Limitations
+Despite their impressive capabilities, LLMs have well-known weaknesses:
+
+a) Hallucination: Models confidently generate plausible-sounding but factually incorrect statements. This is the single largest barrier to using LLMs in high-stakes domains like medicine and law.
+
+b) Knowledge Cutoff: An LLM only knows what was in its training data. Without external retrieval, it cannot answer questions about recent events.
+
+c) Context Length Limits: Although context windows are growing rapidly (Gemini 1.5 Pro supports 2 million tokens), retrieval quality often degrades for facts buried in the middle of long contexts — a phenomenon called "lost in the middle."
+
+d) Reasoning Failures: Models often fail at multi-step arithmetic, logical deduction, and adversarial puzzles even when they can handle simpler versions of the same problems.
+
+e) Cost and Latency: Frontier models are expensive to run at scale and can take several seconds per response.
+
+7. Retrieval-Augmented Generation (RAG)
+RAG is a technique that combines an LLM with an external knowledge store to address the hallucination and knowledge-cutoff problems. The pipeline has five stages:
+
+i) Ingestion — load documents from PDFs, web pages, databases, etc.
+ii) Chunking — split documents into smaller passages, typically a few hundred tokens each.
+iii) Embedding — convert each chunk into a high-dimensional vector using an embedding model.
+iv) Retrieval — at query time, embed the user's question and find the most similar chunks in a vector database such as Qdrant, Pinecone, or Weaviate.
+v) Generation — pass the retrieved chunks as context to the LLM along with a system prompt that instructs it to answer using only the provided information.
+
+When implemented well, RAG dramatically reduces hallucination because the model is grounded in concrete, retrieved evidence rather than generating from its parametric memory.
+
+8. Embedding Models
+Embedding models map text into dense vectors of fixed dimensionality (commonly 384 to 3072 dimensions). The key property is that semantically similar texts map to nearby vectors under cosine similarity. Popular embedding models include OpenAI's text-embedding-3-large, Google's text-embedding-004, and open-source options like BGE and E5. Asymmetric models distinguish between document embeddings and query embeddings, which improves retrieval recall.
+
+9. Prompt Engineering
+A prompt is the input given to an LLM. Prompt engineering is the practice of crafting prompts that produce reliable, high-quality outputs. Common techniques include few-shot prompting (providing examples in the prompt), chain-of-thought prompting (asking the model to reason step by step), and system prompts (instructions that establish the model's role and constraints). For grounded question-answering, an effective system prompt explicitly forbids the model from using outside knowledge and provides a clear refusal phrase to use when the answer is not in the context.
+
+10. The Future
+The field is moving rapidly in several directions: longer context windows, multimodal inputs and outputs, agentic systems that can use tools and take actions, smaller and more efficient models that run on consumer hardware, and improved reasoning through techniques like chain-of-thought training and inference-time scaling. As of 2026, the leading frontier models — Anthropic's Claude 4.x family, OpenAI's GPT-5 family, and Google's Gemini 2.x family — continue to push the boundaries of what is possible with language models.
+
+End of document.
