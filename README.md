@@ -1,6 +1,6 @@
-# 📓 NotebookLLM (Next.js) — Chat With Your Documents
+# 📓 chat-with-pdf
 
-A Google NotebookLM-style RAG application built on **Next.js (App Router)**. Upload a PDF or TXT, ask questions in natural language, and get answers grounded **strictly** in the document — citations included.
+Upload a PDF or TXT, ask questions in natural language, and get answers grounded **strictly** in the document, with citations included. A Google NotebookLM-style RAG application built on **Next.js (App Router)**.
 
 - **Framework:** Next.js 15 (App Router) + TypeScript
 - **LLM:** Google Gemini (`gemini-2.5-flash`)
@@ -12,10 +12,10 @@ A Google NotebookLM-style RAG application built on **Next.js (App Router)**. Upl
 ## ✨ Features
 
 - 📤 PDF / TXT upload via the browser
-- 🔍 Full RAG pipeline: chunk → embed → store → retrieve → generate
-- 🧠 **Per-document isolation** — each upload gets its own Qdrant collection
+- 🔍 Full RAG pipeline: chunk, embed, store, retrieve, generate
+- 🧠 **Per-document isolation**: each upload gets its own Qdrant collection
 - 📄 **Page citations** for every answer
-- 🛑 **Hallucination-resistant** — refuses to answer outside document scope
+- 🛑 **Hallucination-resistant**: refuses to answer outside document scope
 
 ---
 
@@ -47,12 +47,14 @@ A Google NotebookLM-style RAG application built on **Next.js (App Router)**. Upl
 ### 1. Prerequisites
 
 - Node.js **20+**
-- A free **Gemini API key** → https://aistudio.google.com/apikey
-- A free **Qdrant Cloud** cluster → https://cloud.qdrant.io/
+- A free **Gemini API key**: https://aistudio.google.com/apikey
+- A free **Qdrant Cloud** cluster: https://cloud.qdrant.io/
 
 ### 2. Install
 
 ```bash
+git clone git@github.com:vivek-0509/chat-with-pdf.git
+cd chat-with-pdf
 npm install
 cp .env.example .env.local
 ```
@@ -87,25 +89,25 @@ npm start
 |---|---|---|
 | **Load** | `PDFLoader` / `TextLoader` | One Document per page (PDFs) so page numbers propagate. |
 | **Chunk** | `RecursiveCharacterTextSplitter` | `chunkSize: 500`, `chunkOverlap: 100` |
-| **Embed** | `gemini-embedding-001` (Google) | `RETRIEVAL_DOCUMENT` for indexing, `RETRIEVAL_QUERY` for queries (asymmetric → better recall) |
-| **Store** | Qdrant Cloud | One collection per document (`doc_<uuid>`) — guarantees isolation |
+| **Embed** | `gemini-embedding-001` (Google) | `RETRIEVAL_DOCUMENT` for indexing, `RETRIEVAL_QUERY` for queries (asymmetric, better recall) |
+| **Store** | Qdrant Cloud | One collection per document (`doc_<uuid>`), guarantees isolation |
 | **Retrieve** | Cosine similarity | Top **k=5** chunks |
 | **Generate** | `gemini-2.5-flash`, temperature 0.1 | Strict system prompt enforces document-only answers |
 
-### Chunking strategy — why 500/100?
+### Chunking strategy: why 500/100?
 
 The `RecursiveCharacterTextSplitter` is configured with chunk size **500 characters** and **100 char overlap** (~20%). Splits priority: `["\n\n", "\n", ". ", " ", ""]`.
 
-- Smaller chunks → higher precision at retrieval time.
+- Smaller chunks give higher precision at retrieval time.
 - 20% overlap prevents context loss at chunk boundaries.
 - The recursive separator list almost never splits mid-sentence.
 
 ### Hallucination prevention (4 layers)
 
 1. **Strict system prompt** with absolute rules + explicit refusal phrase: `"I couldn't find that in the document."`
-2. **Temperature 0.1** — near-deterministic generation.
-3. **Per-document collection** — query for doc A literally cannot retrieve doc B's vectors.
-4. **Citations rendered in UI** — every claim is verifiable.
+2. **Temperature 0.1**, near-deterministic generation.
+3. **Per-document collection**, query for doc A literally cannot retrieve doc B's vectors.
+4. **Citations rendered in UI**, every claim is verifiable.
 
 ---
 
@@ -158,8 +160,8 @@ The free tier (1 GB cluster, no credit card) is sufficient. Just paste the URL +
 
 - Uploaded files are written to `os.tmpdir()` and deleted after ingestion.
 - Each document creates a new Qdrant collection. Add a cleanup job if you expect heavy use.
-- Scanned PDFs without a text layer won't extract text — OCR is out of scope.
-- No auth — anyone with the URL can upload. Add auth before exposing publicly.
+- Scanned PDFs without a text layer won't extract text. OCR is out of scope.
+- No auth. Anyone with the URL can upload. Add auth before exposing publicly.
 
 ---
 

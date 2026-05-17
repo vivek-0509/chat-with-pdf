@@ -1,4 +1,4 @@
-/* ====== Design tokens — Warm Notebook (light) ====== */
+/* ====== Design tokens - Warm Notebook (light) ====== */
 :root {
   /* Paper / surface stack */
   --bg: #faf6ee;
@@ -7,7 +7,7 @@
   --surface-2: #f7f0dd;
   --surface-3: #efe6cd;
 
-  /* Borders — warm sand */
+  /* Borders - warm sand */
   --border: #ebe1c5;
   --border-strong: #d8caa3;
   --border-hover: #b8a576;
@@ -28,7 +28,7 @@
   --accent-grad: linear-gradient(135deg, #d97706 0%, #c2410c 60%, #9a3412 100%);
   --accent-grad-soft: linear-gradient(135deg, rgba(217, 119, 6, 0.12), rgba(194, 65, 12, 0.06));
 
-  /* Status — tuned for light bg */
+  /* Status - tuned for light bg */
   --success: #047857;
   --success-soft: rgba(4, 120, 87, 0.08);
   --error: #b91c1c;
@@ -40,7 +40,7 @@
   --radius-sm: 10px;
   --radius-pill: 999px;
 
-  /* Shadows — soft, warm */
+  /* Shadows - soft, warm */
   --shadow-sm: 0 1px 2px rgba(60, 38, 14, 0.05);
   --shadow-md: 0 8px 24px rgba(60, 38, 14, 0.08), 0 2px 6px rgba(60, 38, 14, 0.04);
   --shadow-lg: 0 24px 50px rgba(60, 38, 14, 0.12), 0 4px 12px rgba(60, 38, 14, 0.05);
@@ -725,3 +725,65 @@ input, textarea { font-family: inherit; color: var(--text); }
 
 /* Reset button row */
 .reset-row { margin-top: 14px; }
+
+/* ====== CRAG badges + graded source pills ====== */
+.crag-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 10px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+}
+.crag-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+}
+.crag-correct {
+  background: rgba(4, 120, 87, 0.10);
+  color: var(--success);
+  border-color: rgba(4, 120, 87, 0.30);
+}
+.crag-ambiguous {
+  background: rgba(180, 83, 9, 0.10);
+  color: var(--warn);
+  border-color: rgba(180, 83, 9, 0.30);
+}
+.crag-refuse {
+  background: rgba(120, 113, 108, 0.10);
+  color: var(--text-2);
+  border-color: var(--border-strong);
+}
+
+.pill-score {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px;
+  margin-left: 4px;
+  padding: 0 4px;
+  height: 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 0, 0, 0.06);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.pill.pill-correct {
+  background: rgba(4, 120, 87, 0.10);
+  color: var(--success);
+  border-color: rgba(4, 120, 87, 0.30);
+}
+.pill.pill-ambiguous {
+  background: rgba(180, 83, 9, 0.10);
+  color: var(--warn);
+  border-color: rgba(180, 83, 9, 0.30);
+}
+.pill.pill-incorrect {
+  background: rgba(120, 113, 108, 0.08);
+  color: var(--text-2);
+  border-color: var(--border-strong);
+}

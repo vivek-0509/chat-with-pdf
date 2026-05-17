@@ -1,7 +1,7 @@
 {
-  "name": "notebook-llm-rag",
+  "name": "chat-with-pdf",
   "version": "1.0.0",
-  "description": "Google NotebookLM-style RAG app on Next.js. Upload a PDF/TXT and chat with it. Powered by Gemini + Qdrant.",
+  "description": "RAG app on Next.js. Upload a PDF/TXT and chat with it. Powered by Gemini + Qdrant.",
   "private": true,
   "scripts": {
     "dev": "next dev",

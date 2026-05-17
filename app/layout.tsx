@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "NotebookLM Clone — Chat with your document",
+  title: "Chat with PDF",
   description: "Upload a PDF or TXT and ask grounded questions powered by Gemini + Qdrant.",
 };
 

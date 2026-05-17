@@ -2,15 +2,25 @@
 
 import { useEffect, useRef, useState } from "react";
 
-interface Source { page: number; snippet: string; }
+type CragGrade = "correct" | "ambiguous" | "incorrect";
+type CragPath = "correct" | "ambiguous" | "refuse";
+
+interface Source { page: number; snippet: string; grade?: CragGrade; score?: number; }
 interface ChatMessage {
   role: "user" | "bot";
   text?: string;
   sources?: Source[];
+  cragPath?: CragPath;
   error?: string;
   loading?: boolean;
   notFound?: boolean;
 }
+
+const CRAG_PATH_LABEL: Record<CragPath, string> = {
+  correct: "CRAG: Direct match",
+  ambiguous: "CRAG: Refined",
+  refuse: "CRAG: Not in document",
+};
 
 const PROCESS_STEPS = ["Chunking", "Embedding", "Indexing"] as const;
 
@@ -146,6 +156,7 @@ export default function Home() {
           role: "bot",
           text: data.answer,
           sources: data.sources || [],
+          cragPath: data.cragPath,
           notFound,
         };
         return next;
@@ -175,7 +186,7 @@ export default function Home() {
             </svg>
           </div>
           <div className="brand-text">
-            <div className="brand-name">NotebookLM</div>
+            <div className="brand-name">Chat with PDF</div>
             <div className="brand-sub">Gemini · Qdrant · RAG</div>
           </div>
         </div>
@@ -345,17 +356,28 @@ export default function Home() {
                 ) : (
                   <>
                     <div>{m.text}</div>
+                    {m.cragPath && (
+                      <div className={`crag-badge crag-${m.cragPath}`}>
+                        <span className="crag-dot" />
+                        {CRAG_PATH_LABEL[m.cragPath]}
+                      </div>
+                    )}
                     {m.sources && m.sources.length > 0 && (
                       <details className="sources">
                         <summary>Sources ({m.sources.length})</summary>
                         <div className="source-pills">
                           {m.sources.map((s, j) => (
-                            <span key={j} className="pill">📄 p. {s.page}</span>
+                            <span key={j} className={`pill ${s.grade ? `pill-${s.grade}` : ""}`}>
+                              📄 p. {s.page}
+                              {typeof s.score === "number" && (
+                                <span className="pill-score">{Math.round(s.score * 100)}</span>
+                              )}
+                            </span>
                           ))}
                         </div>
                         {m.sources.map((s, j) => (
                           <div key={j} className="source-snip">
-                            <strong style={{ color: "var(--text)" }}>p. {s.page}</strong> — {s.snippet}…
+                            <strong style={{ color: "var(--text)" }}>p. {s.page}</strong> - {s.snippet}…
                           </div>
                         ))}
                       </details>
